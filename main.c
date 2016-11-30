@@ -135,7 +135,18 @@ void randomUltrametric(int n, int M[n][n]) {
 
 int main(int argc, char* argv[]) {
 
+	if (argc <= 1) {
+		printf("Must provide matrix size as command line argument.\n");
+		return -1;
+	}
+
 	int n = atoi(argv[1]);
+
+	if (n > 999) {
+		printf("Matrix size must be less than 1000.\n");
+		return -1;
+	}
+
 	int M[n][n];
 
 	srand(time(NULL));
