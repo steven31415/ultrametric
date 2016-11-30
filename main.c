@@ -8,6 +8,7 @@
 #include <time.h>
 
 struct node {
+
 	struct node* left;
 	struct node* right;
 	struct node* parent;
@@ -15,19 +16,36 @@ struct node {
 };
 
 void freeTree(struct node* root) {
+
 	if (!root) {
 		return;
 	}
 	
-	//freeTree(root->left);
-	//freeTree(root->right);
+	freeTree(root->left);
+	freeTree(root->right);
 	free(root);
 }
 
 void printMatrix(int n, int M[n][n]){
+
+	int max_val = 0;
 	for(int i = 0; i < n; ++i) {
 	    for(int j = 0; j < n; ++j) {
-	        printf("%d  ", M[i][j]);
+	        if (M[i][j] > max_val) {
+	        	max_val = M[i][j];
+	        }
+	    }
+	}
+
+	int digit_count = 0;
+	while (max_val != 0) {
+		max_val /= 10;
+		digit_count++;
+	}
+
+	for(int i = 0; i < n; ++i) {
+	    for(int j = 0; j < n; ++j) {
+	        printf("%*d  ", digit_count, M[i][j]);
 	    }
 	    printf("\n");
 	}
@@ -43,7 +61,7 @@ void randomUltrametric(int n, int M[n][n]) {
 	int C_size = n;
 
 	for (int i = 0; i < n; ++i) {
-		struct node* leaf = malloc(sizeof(struct node*));
+		struct node* leaf = malloc(sizeof(struct node));
 		leaf->left = NULL;
 		leaf->right = NULL;
 		leaf->height = 0;
@@ -62,7 +80,7 @@ void randomUltrametric(int n, int M[n][n]) {
 		}
 		while (r1 == r2);
 
-		struct node* new_node = malloc(sizeof(struct node*));
+		struct node* new_node = malloc(sizeof(struct node));
 		new_node->left = C[r1];
 		new_node->right = C[r2];
 		new_node->parent = NULL;
@@ -85,6 +103,8 @@ void randomUltrametric(int n, int M[n][n]) {
 
 		C_size--;
 	}
+
+	struct node* root = C[0];
 
 
 	// Contruct corresponding distance matrix
@@ -110,16 +130,15 @@ void randomUltrametric(int n, int M[n][n]) {
 
 	// Delete tree
 
-	free(C[0]);
+	freeTree(root);
 }
 
-int main() {
-	srand(time(NULL));
+int main(int argc, char* argv[]) {
 
-	int n = 4;
+	int n = atoi(argv[1]);
 	int M[n][n];
 
+	srand(time(NULL));
 	randomUltrametric(n, M);
-
 	printMatrix(n, M);
 }
