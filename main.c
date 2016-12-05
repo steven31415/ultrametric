@@ -133,6 +133,45 @@ void randomUltrametric(int n, int M[n][n]) {
 	freeTree(root);
 }
 
+void matrixManipulator(int n, int M[n][n]) {
+	printf("Type -1 to Quit Matrix Manipulator\n");
+
+	int user_input1, user_input2;	
+	while (1) {
+		printf("Enter 1st column index: ");
+		scanf("%d", &user_input1);
+
+		if (user_input1 == -1) {
+			return;
+		}
+
+		printf("Enter 2nd column index: ");
+		scanf("%d", &user_input2);
+
+		if (user_input2 == - 1) {
+			return;
+		}
+
+		int temp_column[n];
+
+		for (int i = 0; i < n; ++i) {
+			temp_column[i] = M[user_input1][i];
+			M[user_input1][i] = M[user_input2][i];
+			M[user_input2][i] = temp_column[i];
+		}
+
+		int temp_row[n];
+
+		for (int i = 0; i < n; ++i) {
+			temp_row[i] = M[i][user_input1];
+			M[i][user_input1] = M[i][user_input2];
+			M[i][user_input2] = temp_row[i];
+		}
+
+		printMatrix(n, M);
+	}
+}
+
 int main(int argc, char* argv[]) {
 
 	if (argc <= 1) {
@@ -152,4 +191,5 @@ int main(int argc, char* argv[]) {
 	srand(time(NULL));
 	randomUltrametric(n, M);
 	printMatrix(n, M);
+	matrixManipulator(n, M);
 }
